@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Menu Tabs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .menu {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .menu li {
+            padding: 10px;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .menu li.active {
+            background-color: #ccc;
+        }
+
+        .content {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .select-container {
+            position: relative;
+            width: 200px;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            appearance: none;
+        }
+
+        /* Styles for the dropdown arrow */
+        .select-container::after {
+            content: '\25BC';
+            /* Downward-pointing arrow */
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+        }
+    </style>
+</head>
+
+<body>
+
+    <ul class="menu">
+        <li onclick="showTab(1)">Tab 1</li>
+        <li onclick="showTab(2)">Tab 2</li>
+        <li onclick="showTab(3)">Tab 3</li>
+        <li onclick="showTab(4)">Tab 4</li>
+        <li onclick="showTab(5)">Tab 5</li>
+    </ul>
+
+    <div class="content" id="tab1">
+        <h2>Ping Pong Checker</h2>
+        <label for="numberInput_Tab1">Enter a number:</label>
+        <input type="number" id="numberInput_Tab1" name="numberInput_Tab1">
+        <button onclick="checkPingPong_Tab1()">Check</button>
+        <button onclick="clearData_Tab1()">Clear Data</button>
+        <p id="output_Tab1"></p>
+    </div>
+    <div class="content" id="tab2">
+        <h2>Ping Pong Checker</h2>
+        <label for="nInput">Input1:</label>
+        <input type="number" id="nInput" name="nInput" style="width: 50px;">
+        <label for="iInput">Input2:</label>
+        <input type="number" id="iInput" name="iInput" style="width: 50px;">
+        <label for="jInput">Input3:</label>
+        <input type="number" id="jInput" name="jInput" style="width: 50px;">
+        <button onclick="checkPingPong_Tab2()">Check</button>
+        <button onclick="clearData_Tab2()">Clear Data</button>
+        <p id="output_Tab2"></p>
+    </div>
+
+    <div class="content" id="tab3">
+        <h2>Search in Array</h2>
+        <label for="arrayInput">Enter array elements (comma-separated):</label>
+        <input type="text" id="arrayInput" name="arrayInput">
+        <br><br>
+        <label for="searchInput">Enter search term:</label>
+        <input type="text" id="searchInput" name="searchInput">
+        <button onclick="searchInArray()">Search</button>
+        <p id="outputArray"></p>
+    </div>
+
+    <div class="content" id="tab4">
+        <h2>Date Range Checker</h2>
+        <label for="dateX">Date x:</label>
+        <input type="date" id="dateX" name="dateX"><br>
+        <label for="dateY">Date y:</label>
+        <input type="date" id="dateY" name="dateY"><br>
+        <label for="dateM">Date m:</label>
+        <input type="date" id="dateM" name="dateM"><br>
+        <button onclick="checkDateRange()">Check</button>
+        <p id="outputDate"></p>
+    </div>
+
+    <div class="content" id="tab5">
+        <h2>Website History</h2>
+        <input type="text" id="urlInput" placeholder="Enter URL">
+        <button onclick="addUrl()">Input [URL]</button>
+        <button onclick="goPrev()">prev</button>
+        <button onclick="goNext()">next</button>
+        <button onclick="getCurrent()">current</button>
+        <button onclick="showAll()">all</button>
+        <p id="outputHistory"></p>
+    </div>
+
+
+    <script>
+        showTab(1);
+
+        function showTab(tabNumber) {
+            // Hide all content divs
+            var contents = document.getElementsByClassName('content');
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove('active');
+            }
+
+            // Deactivate all menu items
+            var menuItems = document.getElementsByClassName('menu')[0].getElementsByTagName('li');
+            for (var i = 0; i < menuItems.length; i++) {
+                menuItems[i].classList.remove('active');
+            }
+
+            // Show the selected tab
+            document.getElementById('tab' + tabNumber).classList.add('active');
+
+            // Activate the selected menu item
+            menuItems[tabNumber - 1].classList.add('active');
+
+        }
+
+        // Function Tab 1
+        function checkPingPong_Tab1() {
+            var n = document.getElementById('numberInput_Tab1').value;
+            var output = '';
+
+            for (var i = 1; i <= n; i++) {
+                if (i % 3 === 0 && i % 5 === 0) {
+                    output += i + ' Ping Pong<br>';
+                } else if (i % 3 === 0) {
+                    output += i + ' Ping<br>';
+                } else if (i % 5 === 0) {
+                    output += i + ' Pong<br>';
+                }
+            }
+
+            document.getElementById('output_Tab1').innerHTML = output;
+        }
+
+        function clearData_Tab1() {
+            document.getElementById('numberInput_Tab1').value = '';
+            document.getElementById('output_Tab1').innerHTML = '';
+        }
+
+
+        // Function Tab 2
+        function checkPingPong_Tab2() {
+            var n = parseInt(document.getElementById('nInput').value);
+            var i = parseInt(document.getElementById('iInput').value);
+            var j = parseInt(document.getElementById('jInput').value);
+            var output = '';
+
+            for (var k = 1; k <= n; k++) {
+                if (k % i === 0 && k % j === 0) {
+                    output += k + ' Ping Pong<br>';
+                } else if (k % i === 0) {
+                    output += k + ' Ping<br>';
+                } else if (k % j === 0) {
+                    output += k + ' Pong<br>';
+                }
+            }
+
+            document.getElementById('output_Tab2').innerHTML = output;
+        }
+
+        function clearData_Tab2() {
+            document.getElementById('nInput').value = '';
+            document.getElementById('iInput').value = '';
+            document.getElementById('jInput').value = '';
+            document.getElementById('output_Tab2').innerHTML = '';
+        }
+
+        // Function Tab 3
+        function searchInArray() {
+            var arrayInput = document.getElementById('arrayInput').value.split(',');
+            var searchTerm = document.getElementById('searchInput').value;
+
+            var output = [];
+            var counttext = 0;
+            var countindex = 0;
+            arrayInput.forEach((value, index) => {
+                if (value.trim().includes(searchTerm) && !output.includes(value.trim()) || (value.trim().toLowerCase().includes(searchTerm.toLowerCase()) && !output.includes(value.trim()))) {
+                    if (value.trim().includes(searchTerm) && !output.includes(value.trim())) {
+                        counttext++;
+                    }
+                    output.push(value.trim());
+                    countindex++;
+                }
+            });
+
+            if (output.length === 0) {
+                document.getElementById('outputArray').innerHTML = 'No results found';
+            } else {
+                document.getElementById('outputArray').innerHTML = '[' + output.join(', ') + ']<br/>' + counttext + ', ' + countindex;
+            }
+        }
+
+
+        //Function Tab 4
+        function checkDateRange() {
+            var dateX = new Date(document.getElementById('dateX').value);
+            var dateY = new Date(document.getElementById('dateY').value);
+            var dateM = new Date(document.getElementById('dateM').value);
+
+            if (dateM >= dateX && dateM <= dateY) {
+                var diffDays = Math.ceil((dateM - dateX) / (1000 * 60 * 60 * 24));
+                document.getElementById('outputDate').innerHTML = 'true, ' + diffDays + ' Days';
+            } else {
+                var diffDays = Math.ceil((dateM - dateX) / (1000 * 60 * 60 * 24));
+                document.getElementById('outputDate').innerHTML = 'false, ' + diffDays + ' Days';
+            }
+        }
+
+        //Function Tab 5
+        var visitedUrls = [];
+        var currentPos = -1;
+
+        function addUrl() {
+            var url = document.getElementById('urlInput').value;
+            visitedUrls.splice(currentPos + 1);
+            visitedUrls.push(url);
+            currentPos++;
+        }
+
+        function goPrev() {
+            if (currentPos <= 0) {
+                document.getElementById('outputHistory').innerHTML = 'No website to previous';
+            } else {
+                currentPos--;
+                document.getElementById('outputHistory').innerHTML = 'Now you on ' + visitedUrls[currentPos];
+            }
+        }
+
+        function goNext() {
+            if (currentPos >= visitedUrls.length - 1) {
+                document.getElementById('outputHistory').innerHTML = 'No website to go';
+            } else {
+                currentPos++;
+                document.getElementById('outputHistory').innerHTML = 'Now you on ' + visitedUrls[currentPos];
+            }
+        }
+
+        function getCurrent() {
+            if (currentPos < 0) {
+                document.getElementById('outputHistory').innerHTML = 'No website visited yet';
+            } else {
+                document.getElementById('outputHistory').innerHTML = 'Now you on ' + visitedUrls[currentPos];
+            }
+        }
+
+        function showAll() {
+            document.getElementById('outputHistory').innerHTML = '[' + visitedUrls.join(', ') + ']';
+        }
+    </script>
+
+</body>
+
+</html>
